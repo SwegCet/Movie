@@ -15,9 +15,19 @@ export function AuthProvider({ children }) {
       // Temporary validity check, will swap LATER
       throw new Error("Email & Password Required");
     }
-    const fakeToken = `demo-${Date.now()}`;
-    localStorage.setItem("auth_token", fakeToken);
-    setUser({ token: fakeToken, email });
+    const token = `demo-${Date.now()}`;
+    localStorage.setItem("auth_token", token);
+    setUser({ email, token });
+  };
+
+  const signup = async ({ email, password }) => {
+    if (!email || !password) {
+      // Temporary validity check, will swap LATER
+      throw new Error("Email & Password Required");
+    }
+    const token = `demo-${Date.now()}`;
+    localStorage.setItem("auth_token", token);
+    setUser({ email, token });
   };
 
   const logout = () => {
@@ -25,7 +35,7 @@ export function AuthProvider({ children }) {
     setUser(null);
   };
 
-  const value = useMemo(() => ({ user, login, logout }), [user]);
+  const value = useMemo(() => ({ user, login, signup, logout }), [user]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
